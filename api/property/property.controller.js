@@ -43,8 +43,12 @@ export async function removeProperty(req, res) {
     }
 }
 export async function addProperty(req, res) {
-    const searchParams = new URLSearchParams(req.query);
-    const property= _propertyFromSearchParams(searchParams);
+    const {name, type,imgUrls, price, summary, capacity, amenities, accessibility, bathrooms, bedrooms, beds, rules, labels} = req.body
+    if (!name || !type || !price || !summary || !capacity || !amenities || !accessibility || !bathrooms || !bedrooms || !beds) {
+        return  res.status(400).send({ err: 'Missing required fields to update property' })
+    }
+    
+    const property= _getEmptyProperty(name, type,imgUrls, price, summary, capacity, amenities, accessibility, bathrooms, bedrooms, beds, rules, labels)
     try {
         const addedProperty = await propertyService.save(property)
         usersService.setNewPropertyToHost(addedProperty._id, addedProperty.ownerId)
@@ -57,11 +61,22 @@ export async function addProperty(req, res) {
 
 }
 export async function updateProperty(req, res) {
-    const searchParams = new URLSearchParams(req.query);
-    const { propertyId } = req.params
-    const property= _propertyFromSearchParams(searchParams);
-    property._id = propertyId;
+    const {name, type,imgUrls, price, summary, capacity, amenities, accessibility, bathrooms, bedrooms, beds, rules, labels} = req.body
+    if (!name || !type || !price || !summary || !capacity || !amenities || !accessibility || !bathrooms || !bedrooms || !beds) {
+        return  res.status(400).send({ err: 'Missing required fields to update property' })
+    }
+    
+    const property= _getEmptyProperty(name, type,imgUrls, price, summary, capacity, amenities, accessibility, bathrooms, bedrooms, beds, rules, labels)
     try {
+        const existingProperty = await propertyService.getById(propertyId)
+        if (!existingProperty) {
+            return res.status(404).send({ err: `Property with id ${propertyId} not found` })
+        }
+        for (const field of Object.keys(existingProperty)) {
+            if (property[field] === undefined) {
+                property[field] = existingProperty[field]
+            }
+        }
         const updatedProperty = await propertyService.save(property)
         res.send(_prepForUI(updatedProperty))
     }
@@ -94,11 +109,11 @@ export async function getPropertiesByCity(req, res) {
 
 export async function postReview(req, res) {
     const { propertyId } = req.params
-    const searchParams = new URLSearchParams(req.query);
+    const {txt, rate, by} = req.body
     const review= {
-        txt: searchParams.get('txt') || '',
-        rate: +searchParams.get('rate') || 0,
-        by: searchParams.get('by') || '',
+        txt: txt || '',
+        rate: +rate || 0,
+        by: req.loginToken._id,
     }
     try {
         const ansReview = await propertyService.postReview(propertyId, review)
@@ -180,6 +195,7 @@ function _getDefaultFilter() {
     }
 }
 
+/*
 function _propertyFromSearchParams(searchParams){
     const emptyProperty = _getEmptyProperty()
     const newProperty = {}
@@ -211,6 +227,7 @@ function _propertyFromSearchParams(searchParams){
     }
     return newProperty
 }
+*/
 
 function _getEmptyProperty( name = '', 
                            type= null,
