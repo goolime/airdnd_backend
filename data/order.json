@@ -1,0 +1,16 @@
+[
+    {
+        "propertyId": "X4lDaU",
+        "guest": "yzkikt",
+        "startDate": "11 Nov 2025",
+        "endDate": "13 Nov 2025",
+        "guests": {
+            "adults": 1,
+            "kids": 2,
+            "infants": 3,
+            "pets": 0
+        },
+        "totalPrice": 184.2,
+        "_id": "Vy0hkV"
+    }
+]
