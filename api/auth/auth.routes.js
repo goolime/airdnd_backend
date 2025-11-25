@@ -1,6 +1,6 @@
 import express from 'express'
 import { registerUser, loginUser, logoutUser  } from './auth.controller.js'
-import { log } from '../../midlewares/log.middleware'
+import { log } from '../../midlewares/log.middleware.js'
 const router = express.Router()
 
 router.post('/signin', log, registerUser)

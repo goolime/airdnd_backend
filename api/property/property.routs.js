@@ -1,5 +1,6 @@
 import express from 'express'
-import { getProperties, getProperty, removeProperty, addProperty, updateProperty, getPropertiesByCity, postReview } from './property.controller.js'
+import { getProperties, getProperty, removeProperty, addProperty, updateProperty, getPropertiesByCity } from './property.controller.js'
+import { postReview } from '../reviews/reviews.controller.js'
 import { getOrdersByPropertyId } from '../order/orders.controller.js'
 import { log } from '../../midlewares/log.middleware.js'
 import { requireAuth } from '../../midlewares/require-auth.middleware.js'

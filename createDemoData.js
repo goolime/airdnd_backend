@@ -1,2 +1,4 @@
-import { validateDATA } from "./services/demo-data.service.js";
-validateDATA()
+import { exit } from "process";
+import { validateDATA } from "./services/remote.demo-data.service.js";
+await validateDATA()
+exit();

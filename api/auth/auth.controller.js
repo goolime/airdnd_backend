@@ -30,28 +30,31 @@ export async function registerUser(req,res){
     }
 }
 
-export async function loginUser(req,res){
-    const {username, password} = req.body
+export async function loginUser(req, res) {
+    const { username, password } = req.body
+    if (!username) {
+        res.status(400).send('username and password are required!')
+        return
+    }
     try {
         const user = await usersService.login(username, password)
+        loggerService.info('User login: ', user)
+        
         const loginToken = authService.getLoginToken(user)
         res.cookie('loginToken', loginToken, { sameSite: 'None', secure: true })
         res.json(user)
-        loggerService.info(`User ${user._id} logged in successfully`)
-    }
-    catch (err) {
+    } catch (err) {
         loggerService.error('Cannot login user', err)
-        res.status(400).send({ err: 'Cannot login user' })
+        res.status(400).send('Cannot login user')
     }
 }
 
-export async function logoutUser(req,res){
+export async function logoutUser(req, res) {
     try {
         res.clearCookie('loginToken')
         res.send({ msg: 'Logged out successfully' })
-    }
-    catch (err) {
+    } catch (err) {
         loggerService.error('Cannot logout user', err)
-        res.status(400).send({ err: 'Cannot logout user' })
+        res.status(400).send('Cannot logout user')
     }
 }
