@@ -44,7 +44,7 @@ function doLog(level, ...args) {
     )
     var line = strs.join(' | ')
     line = `${getTime()} - ${level} - ${line}\n`
-    if (level !== 'DEBUG') console.log(chalkfunction(line))
+    console.log(chalkfunction(line))
     fs.appendFile('./logs/backend.log', line, (err) => {
         if (err) console.log(chalk.red('FATAL: cannot write to log file'))
     })

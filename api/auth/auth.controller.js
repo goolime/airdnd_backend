@@ -32,6 +32,7 @@ export async function registerUser(req,res){
 
 export async function loginUser(req, res) {
     const { username, password } = req.body
+    console.log(req.body)
     if (!username) {
         res.status(400).send('username and password are required!')
         return
@@ -42,7 +43,8 @@ export async function loginUser(req, res) {
         
         const loginToken = authService.getLoginToken(user)
         res.cookie('loginToken', loginToken, { sameSite: 'None', secure: true })
-        res.json(user)
+        const fulluser = await usersService.getById(user._id)
+        res.json(fulluser)
     } catch (err) {
         loggerService.error('Cannot login user', err)
         res.status(400).send('Cannot login user')

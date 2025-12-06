@@ -7,9 +7,8 @@ export async function getOrdersByPropertyId(req, res) {
     const { propertyId } = req.params
     try {
         const orders = await ordersService.getOrdersByPropertyId(propertyId)
-        res.send(orders)
         loggerService.info(`Orders for property ${propertyId} retrieved successfully`)
-       res.send(propertyId)
+        res.send(orders)
     }
     catch (err) {
         loggerService.error(`Cannot get orders for property ${propertyId}`, err)
@@ -21,9 +20,8 @@ export async function getOrdersByUserId(req, res) {
     const { userId } = req.params
     try {
         const orders = await ordersService.getOrdersByUserId(userId)
-        res.send(orders)
         loggerService.info(`Orders for user ${userId} retrieved successfully`)
-       res.send(userId)
+        res.send(orders)
     }
     catch (err) {
         loggerService.error(`Cannot get orders for user ${userId}`, err)

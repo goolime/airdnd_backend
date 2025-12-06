@@ -304,7 +304,9 @@ async function setDemoData() {
     await ordersCollection.deleteMany({})
     await reviewsCollection.deleteMany({})
 
+    console.log('Inserting demo users...')
     await usersCollection.insertMany(await Promise.all(users.map(async user=>({ ...user, password: await bcrypt.hash('password123', 10)}))))
+    console.log('Inserting demo users completed.')
 
     console.log('Inserting demo properties...')
     for(let i=0;i<citys.length;i++){
@@ -320,6 +322,31 @@ async function setDemoData() {
             await usersCollection.updateOne({_id: hostId}, {$set: {properties: host.properties}})
         }
     }
+    console.log('Inserting demo properties completed.')
+
+    console.log('Inserting demo orders...')
+    console.log()
+    for(let i=0;i<await propertiesCollection.countDocuments();i++){
+        const property = await propertiesCollection.find().limit(1).skip(i).next()
+        const orderCount = Math.floor(Math.random()*40)
+        var lastCheckOut = Date.now() - (1000*60*60*24*90) //90 days ago
+        for(let j=0;j<orderCount;j++){
+            const checkInDate = lastCheckOut + 1000*60*60*24*Math.floor(Math.random()*14) //within 180 days
+            const stayLength = Math.floor(Math.random()*14+1) //1-14 days
+            const checkOutDate = checkInDate + (1000*60*60*24*stayLength)
+            lastCheckOut = checkOutDate
+            const order={
+                propertyId: property._id,
+                guest: await getHost(),
+                checkIn: new Date(checkInDate),
+                checkOut: new Date(checkOutDate),
+                guests: { adults: Math.floor(Math.random()*5+1), kids: Math.floor(Math.random()*4), infants: Math.floor(Math.random()*2), pets: Math.floor(Math.random()*2) },
+                totalPrice: stayLength * property.price
+            }
+            await ordersCollection.insertOne(order)
+        }
+    }
+    console.log('Inserting demo orders completed.')
 }
 
 function getEmptyProperty( name = '', 

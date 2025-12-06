@@ -42,6 +42,7 @@ async function save(order) {
             order._id = criteria._id
             loggerService.debug(`OrderService - update: ${order._id} updated`)
         } else {
+            console.log('adding order:', order)
             const insertResult = await collection.insertOne(order)
             order._id = insertResult.insertedId
             loggerService.debug(`OrderService - add: ${order._id} added`)
@@ -70,7 +71,7 @@ async function remove(orderId) {
 async function getOrdersByPropertyId(propertyId) {
     try {
         const collection = await dbService.getCollection(COLLECTION_NAME)
-        const criteria={propertyId: propertyId}
+        const criteria={propertyId: ObjectId.createFromHexString(propertyId)}
         const propertyOrders = await collection.find(criteria).toArray()
         loggerService.debug(`OrderService - getOrdersByPropertyId: ${propertyId} found ${propertyOrders.length} orders`)
         return propertyOrders
@@ -84,7 +85,7 @@ async function getOrdersByPropertyId(propertyId) {
 async function getOrdersByUserId(userId) {
     try {
         const collection = await dbService.getCollection(COLLECTION_NAME)
-        const criteria={guest: userId}
+        const criteria={guest:ObjectId.createFromHexString(userId)}
         const userOrders = await collection.find(criteria).toArray()
         loggerService.debug(`OrderService - getOrdersByUserId: ${userId} found ${userOrders.length} orders`)
         return userOrders

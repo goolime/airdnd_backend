@@ -13,7 +13,6 @@ export const usersService = {
     remove,
     save,
     removePropertyFromHost,
-    setNewPropertyToHost,
     getMiniUserById,
     login,
     getEmptyUser
@@ -92,13 +91,6 @@ async function save(user) {
 async function removePropertyFromHost(propertyId, ownerId) {
     const user = await getById(ownerId)
     user.properties = user.properties.filter(propId => propId !== propertyId)
-    await save(user)
-}
-
-
-async function setNewPropertyToHost(propertyId, ownerId) {
-    const user = await getById(ownerId)
-    user.properties.push(propertyId)
     await save(user)
 }
 
