@@ -105,7 +105,7 @@ async function getMiniUserById(userId) {
     }
 }
 
-export function getEmptyUser(fullname = '', imgUrl = '', username = '', whishlist = []) {
+export function getEmptyUser(fullname = '', imgUrl = '', username = '', wishlist = []) {
     return { fullname, imgUrl, username, wishlist }
 }
 
