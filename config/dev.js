@@ -1,4 +1,5 @@
 export default {
-    dbURL: 'mongodb://127.0.0.1:27017',
-    dbName: 'Projects'
+    dbURL: 'mongodb+srv://dekelsProducts:ZgmTtzOchTKgEMJ6@dekelscluster.sxqmpwq.mongodb.net/',
+    dbName: 'airbnb_project'
 }
+
