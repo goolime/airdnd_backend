@@ -7,6 +7,7 @@
   "type": "module",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --ignore \"./data\" server.js",
     "debug": "set DEBUG=true && nodemon --ignore \"./data\" server.js",
