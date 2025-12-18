@@ -51,16 +51,16 @@ io.on('connection', (socket) => {
         loggerService.info(`User ${userId} joined with socket ${socket.id}`);
     });
 
-    // User joins a specific conversation room
-    socket.on('conversation:join', (conversationId) => {
-        socket.join(conversationId);
-        loggerService.info(`Socket ${socket.id} joined conversation ${conversationId}`);
+    // User joins a specific chatId room
+    socket.on('chat:join', (chatId) => {
+        socket.join(chatId);
+        loggerService.info(`Socket ${socket.id} joined chat ${chatId}`);
     });
 
-    // User leaves a conversation room
-    socket.on('conversation:leave', (conversationId) => {
-        socket.leave(conversationId);
-        loggerService.info(`Socket ${socket.id} left conversation ${conversationId}`);
+    // User leaves a chat room
+    socket.on('chat:leave', (chatId) => {
+        socket.leave(chatId);
+        loggerService.info(`Socket ${socket.id} left chat ${chatId}`);
     });
 
     // User disconnects
@@ -85,16 +85,16 @@ import propertyRoutes from './api/property/property.routs.js';
 import userRoutes from './api/user/user.routs.js';
 import orderRoutes from './api/order/orders.routs.js';
 import authRoutes from './api/auth/auth.routes.js';
-import conversationRoutes from './api/conversation/conversation.routes.js'; // ADD THIS
+import chatRoutes from './api/chat/chat.routes.js';
 
 app.use('/api/property', propertyRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/order', orderRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/conversations', conversationRoutes); // ADD THIS
+app.use('/api/chats', chatRoutes);
 
-//* For SPA (Single Page Application) - catch all routes and send to the index.html
-app.get('/**', (req, res) => { // CHANGED /*all to /**
+// ONLY match routes that don't start with /api
+app.get(/^\/(?!api).*/, (req, res) => {
     res.sendFile(path.resolve('public/index.html'));
 });
 
