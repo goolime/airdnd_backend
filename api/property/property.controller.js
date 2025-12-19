@@ -151,9 +151,11 @@ export async function getPropertiesByCity(req, res) {
     }
 
     try {
+        if (citys.find(!(c => c.countryCode === city.countryCode && c.city === city.city))) citys.push(city);
         const cityProperties = await propertyService.getPropertiesByCity(city)
         loggerService.info(`Found ${cityProperties.length} properties in city: ${city.city}, ${city.countryCode}`)
-        res.send(await Promise.all(cityProperties.map(async property => await _prepForUI(property))))
+        citysCache.set(`${city.countryCode}-${city.city}`, await Promise.all(cityProperties.map(async property => await _prepForUI(property))));
+        res.send(citysCache.get(`${city.countryCode}-${city.city}`));
     }
     catch (err) {
         loggerService.error('Cannot get properties by city', err)
