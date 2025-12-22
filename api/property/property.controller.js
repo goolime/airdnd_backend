@@ -96,7 +96,7 @@ export async function updateProperty(req, res) {
     }
 }
 
-const citysCache = {};
+const citysCache = new Map();
 const citys=[{ countryCode: 'US', city: 'New York', minLat: 40.4774, maxLat: 40.9176, minLng: -74.2591, maxLng: -73.7004 },
              { countryCode: 'FR', city: 'Paris', minLat: 48.8156, maxLat: 48.9022, minLng: 2.2241, maxLng: 2.4699 },
              { countryCode: 'JP', city: 'Tokyo', minLat: 35.5285, maxLat: 35.8395, minLng: 139.6100, maxLng: 139.9100 },

@@ -7,7 +7,7 @@ export function requireAuth(req, res, next) {
 		const loggedinUser = authService.validateToken(loginToken)
 
 		if (!loggedinUser) return res.status(401).send('Please login')
-		req.loginToken = loggedinUser
+		req.loggedInUser = loggedinUser
 		next()
 	} catch (err) {
     	res.status(401).send('Please login')

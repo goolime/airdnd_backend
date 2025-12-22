@@ -37,12 +37,10 @@ async function createIndexes() {
     try {
         const db = await _connect()
         
-        // Chats indexes
         await db.collection('chats').createIndex({ 'participants.userId': 1 })
         await db.collection('chats').createIndex({ propertyId: 1 })
         await db.collection('chats').createIndex({ lastMessageAt: -1 })
 
-        // Messages indexes
         await db.collection('messages').createIndex({ chatId: 1, createdAt: -1 })
         await db.collection('messages').createIndex({ senderId: 1 })
 
