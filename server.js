@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import { createServer } from 'http'
 import { Server } from 'socket.io'
 import { dbService } from './services/db.service.js'
+import { initializePropertyIndexes } from './services/initializeIndexes.js'
 
 const app = express()
 const server = createServer(app)
@@ -80,7 +81,6 @@ import userRoutes from './api/user/user.routs.js'
 import orderRoutes from './api/order/orders.routs.js'
 import authRoutes from './api/auth/auth.routes.js'
 import chatRoutes from './api/chat/chat.routes.js'
-import { initializePropertyIndexes } from './services/initializeIndexes.js'
 
 app.use('/api/property', propertyRoutes)
 app.use('/api/user', userRoutes)
