@@ -1,4 +1,5 @@
-import { dbService } from './services/db.service.js'
+import { dbService } from "./db.service"
+
 
 
 async function initializePropertyIndexes() {
